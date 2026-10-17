@@ -750,7 +750,7 @@ async function parseTrackMessage(msg, cacheMedia = true) {
     format: formatName,
     sampleRate,
     bitDepth,
-    bitrate,
+    bitrate: bitrate || rawKbps || 3200,
     quality: qualityText,
     isrc,
     hasArtwork,
