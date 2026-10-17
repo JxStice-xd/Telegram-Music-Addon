@@ -702,6 +702,9 @@ async function parseTrackMessage(msg, cacheMedia = true) {
   if (sizeBytes && duration) {
     rawKbps = Math.round((sizeBytes * 8) / (duration * 1000));
   }
+  if (!bitrate && rawKbps > 0) {
+  bitrate = rawKbps;
+}
 
   const isAtmos = Boolean(
     hasEc3Atom ||
