@@ -736,7 +736,7 @@ async function parseTrackMessage(msg, cacheMedia = true) {
   } else if (['flac', 'wav', 'alac'].includes(formatName)) {
     qualityText = `16-bit / 44.1kHz ${formatName.toUpperCase()} Lossless`;
   } else {
-    qualityText = `${formatName.toUpperCase()} (${rawKbps || 320}kbps)`;
+    qualityText = `${formatName.toUpperCase()} (${rawKbps || 3200}kbps)`;
   }
 
   const keep = msgText.toLowerCase().includes('/keep') || msgText.toLowerCase().includes('/ig') || msgText.toLowerCase().includes('#keep');
