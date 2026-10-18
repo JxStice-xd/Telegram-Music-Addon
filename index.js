@@ -2011,6 +2011,7 @@ function formatTrackForClient(t, base) {
     audioQuality: qualityTier,
     quality: qualityTier,
     tier: qualityTier,
+    bitrate: isHiRes ? 4608 : (isLossless ? 1411 : 320),
     bitDepth: t.bitDepth || (isHiRes ? 24 : 16),
     sampleRate: t.sampleRate || (isHiRes ? 96000 : 44100),
     audioModes: isAtmos ? ['DOLBY_ATMOS'] : ['STEREO'],
