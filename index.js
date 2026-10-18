@@ -1605,6 +1605,8 @@ app.get('/manifest.json', (req, res) => {
     canServeLossless: true,
     canServeDolbyAtmos: true,
     resources: ['search', 'stream', 'isrc'],
+    allowDownloads: "0",
+    checkValidLossless: "0",
     types: ['track'],
     contentType: 'music',
     settings: [
