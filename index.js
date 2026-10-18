@@ -1606,7 +1606,7 @@ app.get('/manifest.json', (req, res) => {
     canServeDolbyAtmos: true,
     resources: ['search', 'stream', 'isrc'],
     allowDownloads: "0",
-    checkValidLossless: "0",
+    checkValidLossless: 1,
     types: ['track'],
     contentType: 'music',
     settings: [
@@ -1994,6 +1994,15 @@ async function onTrackForwarded(msg) {
   return null;
 }
 
+function getRealBitrate(t, isHiRes, isLossless) {
+  if (t.sizeBytes && t.duration) {
+    const kbps = Math.round((t.sizeBytes * 8) / (t.duration * 1000));
+    if (kbps > 0) return kbps;
+  }
+  if (t.bitrate && t.bitrate > 0 && t.bitrate !== 3200) return t.bitrate;
+  return isHiRes ? 4608 : (isLossless ? 1411 : 320);
+}
+
 function formatTrackForClient(t, base) {
   const isAtmos = Boolean(t.isAtmos);
   const fmt = (t.format || '').toLowerCase();
@@ -2011,7 +2020,7 @@ function formatTrackForClient(t, base) {
     audioQuality: qualityTier,
     quality: qualityTier,
     tier: qualityTier,
-    bitrate: isHiRes ? 4608 : (isLossless ? 1411 : 320),
+        bitrate: getRealBitrate(t, isHiRes, isLossless),
     bitDepth: t.bitDepth || (isHiRes ? 24 : 16),
     sampleRate: t.sampleRate || (isHiRes ? 96000 : 44100),
     audioModes: isAtmos ? ['DOLBY_ATMOS'] : ['STEREO'],
@@ -2232,6 +2241,7 @@ app.get('/stream/:id', (req, res) => {
     audioMode: isAtmos ? 'DOLBY_ATMOS' : 'STEREO',
     sampleRate: track.sampleRate || 44100,
     bitDepth: track.bitDepth || 16,
+       bitrate: getRealBitrate(track, isHiRes, isLossless),
     quality: qualityTier,
     audioQuality: qualityTier,
     tier: qualityTier,
